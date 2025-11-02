@@ -1,4 +1,4 @@
-# ☁️ Cloud Computing & Big Data Systems – Assignment 2
+# Assignment 2
 
 **Author:** Yu-Ming (Jonathan) Wang
 
@@ -39,6 +39,10 @@ define flask-todo image
 ## 🧩 2. Local Test via Docker Compose and push to Docker Hub
 
 ### docker-compose.yml
+
+```bash
+docker-compose up
+```
 
 ```bash
 docker start flask
