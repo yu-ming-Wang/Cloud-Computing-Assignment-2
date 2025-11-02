@@ -83,13 +83,12 @@ kubectl get svc
 ### Access the App
 
 ```bash
-minikube service flask-service
+minikube service flask-to-service
 ```
 
 ✅ **Screenshots:**
 
-* ![Minikube Pods](screenshot/minikube_pods.png)
-* ![Minikube Service URL](screenshot/minikube_service_url.png)
+* ![Minikube Pods](screenshot/minikube_deploy.png)
 * ![App Running](screenshot/minikube_app_running.png)
 
 ### Pod Recovery Demo
