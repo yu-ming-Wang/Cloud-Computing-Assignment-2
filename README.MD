@@ -42,6 +42,15 @@ define flask-todo image
 
 ### docker-compose.yml
 
+```bash
+docker start flask
+```
+
+```bash
+docker logs -f flask-todo
+```
+Open the service in a browser
+
 ✅ **Screenshot:** ![Local App Running](screenshots/local_app_running.png)
 
 ---
