@@ -34,8 +34,6 @@ Cloud-Computing-Assignment-2/
 
 define flask-todo image
 
-✅ **Screenshot:** ![Docker push](screenshots/docker_push.png)
-
 ---
 
 ## 🧩 2. Local Test via Docker Compose and push to Docker Hub
@@ -52,6 +50,7 @@ docker logs -f flask-todo
 Open the service in a browser
 
 ✅ **Screenshot:** ![Local App Running](screenshot/local_app_running.png)
+✅ **Screenshot:** ![Docker push](screenshot/dockerhub.png)
 
 ---
 
