@@ -51,7 +51,7 @@ docker logs -f flask-todo
 ```
 Open the service in a browser
 
-✅ **Screenshot:** ![Local App Running](screenshots/local_app_running.png)
+✅ **Screenshot:** ![Local App Running](screenshot/local_app_running.png)
 
 ---
 
@@ -87,9 +87,9 @@ minikube service flask-service
 
 ✅ **Screenshots:**
 
-* ![Minikube Pods](screenshots/minikube_pods.png)
-* ![Minikube Service URL](screenshots/minikube_service_url.png)
-* ![App Running](screenshots/minikube_app_running.png)
+* ![Minikube Pods](screenshot/minikube_pods.png)
+* ![Minikube Service URL](screenshot/minikube_service_url.png)
+* ![App Running](screenshot/minikube_app_running.png)
 
 ### Pod Recovery Demo
 
