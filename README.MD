@@ -1,8 +1,6 @@
 # ☁️ Cloud Computing & Big Data Systems – Assignment 2
 
 **Author:** Yu-Ming (Jonathan) Wang
-**Course:** Cloud Computing and Big Data Systems – Fall 2025
-**Objective:** Deploy a Flask + MongoDB To-Do application on **Minikube** and **AWS EKS** using **Docker + Kubernetes**.
 
 ---
 
@@ -32,53 +30,17 @@ Cloud-Computing-Assignment-2/
 
 ## 🧱 1. Docker Image for Flask Application
 
-### Dockerfile (flask image)
+### Dockerfile
 
-```dockerfile
-# Base image
-FROM python:3.9-slim
-
-# Working directory
-WORKDIR /app
-
-# Copy files
-COPY . /app
-
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Expose Flask default port
-EXPOSE 5000
-
-# Start the app
-CMD ["python", "app.py"]
-```
-
-### Build + Tag + Push to Docker Hub
-
-```bash
-# Build image locally
-docker build -t yw8988/flask-todo:v1 .
-
-# Test image locally (optional)
-docker run -p 5000:5000 yw8988/flask-todo:v1
-
-# Log in to Docker Hub
-docker login
-
-# Push image to Docker Hub
-docker push yw8988/flask-todo:v1
-```
+define flask-todo image
 
 ✅ **Screenshot:** ![Docker push](screenshots/docker_push.png)
 
 ---
 
-## 🧩 2. Local Test via Docker Compose (Optional)
+## 🧩 2. Local Test via Docker Compose and push to Docker Hub
 
-```bash
-docker-compose up
-```
+### docker-compose.yml
 
 ✅ **Screenshot:** ![Local App Running](screenshots/local_app_running.png)
 
@@ -221,15 +183,6 @@ kubectl get rs
 ```
 
 ✅ **Screenshot:** ![ReplicaSet Scaled](screenshots/replicaset_scaled.png)
-
----
-
-## 🗾 8. Submission Checklist
-
-* [x] Dockerfile for Flask App
-* [x] Kubernetes YAMLs (Minikube + EKS)
-* [x] Screenshots of both deployments
-* [x] This README file with all commands
 
 ---
 
