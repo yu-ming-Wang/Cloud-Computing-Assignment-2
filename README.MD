@@ -60,12 +60,10 @@ Open the service in a browser
 
 ## ☸️ 3. Deploy on Minikube
 
-### Start Cluster + Add-ons
+### Start Cluster
 
 ```bash
 minikube start
-minikube addons enable dashboard
-minikube addons enable metrics-server
 ```
 
 ### Deploy MongoDB + Flask
