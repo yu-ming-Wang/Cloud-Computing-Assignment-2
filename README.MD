@@ -16,7 +16,9 @@ Cloud-Computing-Assignment-2/
 ├── flask-deployment_eks.yaml          # EKS: Flask Deployment & Service
 ├── mongo-deployment_eks.yaml          # EKS: MongoDB Deployment & Service
 ├── screenshots/                       # All screenshots go here
-└── README.md
+├── alertmanager-values.yaml           # Extra Point
+├── pod-monitoring-alerts.yaml         # Extra Point
+└── README.MD
 ```
 
 ---
