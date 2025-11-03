@@ -189,10 +189,15 @@ docker tag yw8988/flask-todo:latest yw8988/flask-todo:v3
 
 ```bash
 # Update image version
-kubectl set image deployment/flask-deployment flask=yw8988/flask-todo:v3
+kubectl set image deployment flask-todo-deployment flask-todo=yw8988/flask-todo:v3
+```
 
+```bash
 # Check rollout progress
 kubectl rollout status deployment/flask-deployment
+kubectl get pods
+kubectl get deployment flask-todo-deployment
+kubectl describe deployment flask-todo-deployment
 ```
 
 ✅ **Screenshot:** ![Rolling Update](screenshot/rolling_update.png)
