@@ -222,24 +222,40 @@ readinessProbe:
   periodSeconds: 10
 ```
 
-Check:
+```
+To test the liveness probe, the /list endpoint was temporarily changed to an invalid path /brokenpath using kubectl patch.
+Kubernetes detected repeated 404 responses from the probe, marked the pod as unhealthy, and automatically restarted it.
+The restart count increased, confirming that the liveness probe and self-healing mechanism work correctly.
+```
+
+### Intention break app
+```bash
+kubectl patch deployment flask-todo-deployment \
+  --type='json' \
+  -p='[
+    {"op": "replace", "path": "/spec/template/spec/containers/0/livenessProbe/httpGet/path", "value": "/list"}
+  ]'
+
+```
+
+✅ **Screenshot:** ![Health Probe](screenshots/live_probe.png)
+
+
+### Change back 
+```bash
+kubectl patch deployment flask-todo-deployment \
+  --type='json' \
+  -p='[
+    {"op": "replace", "path": "/spec/template/spec/containers/0/livenessProbe/httpGet/path", "value": "/list"}
+  ]'
+```
+
 
 ```bash
 kubectl describe pod <flask_pod_name>
 ```
 
-✅ **Screenshot:** ![Health Probe](screenshots/health_probe_status.png)
-
----
-
-## 📈 7. ReplicaSet Scaling
-
-```bash
-kubectl scale deployment flask-deployment --replicas=3
-kubectl get rs
-```
-
-✅ **Screenshot:** ![ReplicaSet Scaled](screenshots/replicaset_scaled.png)
+✅ **Screenshot:** ![Health Probe](screenshots/read_probe.png)
 
 ---
 
