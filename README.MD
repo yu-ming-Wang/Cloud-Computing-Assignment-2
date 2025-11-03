@@ -86,19 +86,16 @@ kubectl get svc
 minikube service flask-to-service
 ```
 
+### Stop MiniKube service
+
+```bash
+minikube stop
+```
+
 ✅ **Screenshots:**
 
 * ![Minikube Pods](screenshot/minikube_deploy.png)
 * ![App Running](screenshot/minikube_app_running.png)
-
-### Pod Recovery Demo
-
-```bash
-kubectl delete pod <flask_pod_name>
-kubectl get pods
-```
-
-✅ **Screenshot:** ![Pod Recovery](screenshots/pod_recovery.png)
 
 ---
 
@@ -107,17 +104,25 @@ kubectl get pods
 ### Create Cluster (via AWS Console)
 
 1. Navigate to EKS → **Create Cluster**
-2. Choose Kubernetes version 1.29
+2. Choose Kubernetes version 1.33
 3. Add Node Group (t3.medium × 2)
 4. Wait until status = **Active**
 
 ✅ **Screenshot:** ![EKS Console](screenshots/eks_cluster_console.png)
 
-### Configure kubectl
+### Create new config
 
 ```bash
 aws eks --region us-east-1 update-kubeconfig --name <cluster_name>
 kubectl get nodes
+```
+✅ **Screenshot:** ![EKS Console](screenshots/eks_get_node.png)
+
+### Switch kubectl to EKS cluster config
+
+```bash
+kubectl config get-contexts 
+kubectl config use-context arn:aws:eks:us-east-1:767828756359:cluster/nyu-flask-eks
 ```
 
 ### Deploy App
@@ -153,6 +158,15 @@ kubectl rollout status deployment/flask-deployment
 ```
 
 ✅ **Screenshot:** ![Rolling Update](screenshots/rolling_update.png)
+
+### Pod Recovery Demo
+
+```bash
+kubectl delete pod <flask_pod_name>
+kubectl get pods
+```
+
+✅ **Screenshot:** ![Pod Recovery](screenshots/pod_recovery.png)
 
 ---
 
