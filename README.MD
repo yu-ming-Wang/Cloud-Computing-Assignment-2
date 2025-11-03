@@ -222,11 +222,11 @@ readinessProbe:
   periodSeconds: 10
 ```
 
-```
+
 To test the liveness probe, the /list endpoint was temporarily changed to an invalid path /brokenpath using kubectl patch.
 Kubernetes detected repeated 404 responses from the probe, marked the pod as unhealthy, and automatically restarted it.
 The restart count increased, confirming that the liveness probe and self-healing mechanism work correctly.
-```
+
 
 ### Intention break app
 ```bash
@@ -238,7 +238,7 @@ kubectl patch deployment flask-todo-deployment \
 
 ```
 
-✅ **Screenshot:** ![Health Probe](screenshots/live_probe.png)
+✅ **Screenshot:** ![Health Probe](screenshot/live_probe.png)
 
 
 ### Change back 
@@ -255,7 +255,7 @@ kubectl patch deployment flask-todo-deployment \
 kubectl describe pod <flask_pod_name>
 ```
 
-✅ **Screenshot:** ![Health Probe](screenshots/read_probe.png)
+✅ **Screenshot:** ![Health Probe](screenshot/read_probe.png)
 
 ---
 
