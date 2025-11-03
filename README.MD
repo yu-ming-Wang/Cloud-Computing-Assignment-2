@@ -179,9 +179,17 @@ kubectl get pods
 
 ## 🔄 6. Rolling Update
 
+### Push a new version to Docker Hub and give a tag 
+```bash
+docker tag yw8988/flask-todo:latest yw8988/flask-todo:v3
+```
+
+✅ **Screenshot:** ![Rolling Update](screenshot/push_new_version.png)
+✅ **Screenshot:** ![Rolling Update](screenshot/docker_hub_update.png)
+
 ```bash
 # Update image version
-kubectl set image deployment/flask-deployment flask=yw8988/flask-todo:v2
+kubectl set image deployment/flask-deployment flask=yw8988/flask-todo:v3
 
 # Check rollout progress
 kubectl rollout status deployment/flask-deployment
@@ -189,18 +197,9 @@ kubectl rollout status deployment/flask-deployment
 
 ✅ **Screenshot:** ![Rolling Update](screenshot/rolling_update.png)
 
-### Pod Recovery Demo
-
-```bash
-kubectl delete pod <flask_pod_name>
-kubectl get pods
-```
-
-✅ **Screenshot:** ![Pod Recovery](screenshot/pod_recovery.png)
-
 ---
 
-## ❤️‍🔥 6. Health Probes and Monitoring
+## ❤️‍🔥 7. Health Probes and Monitoring
 
 ```yaml
 livenessProbe:
