@@ -108,7 +108,7 @@ minikube stop
 3. Add Node Group (t3.medium × 2)
 4. Wait until status = **Active**
 
-✅ **Screenshot:** ![EKS Console](screenshots/eks_cluster_console.png)
+✅ **Screenshot:** ![EKS Console](screenshot/eks_cluster_console.png)
 
 ### Create new config
 
@@ -116,7 +116,7 @@ minikube stop
 aws eks --region us-east-1 update-kubeconfig --name <cluster_name>
 kubectl get nodes
 ```
-✅ **Screenshot:** ![EKS Console](screenshots/eks_get_node.png)
+✅ **Screenshot:** ![EKS Console](screenshot/eks_get_node.png)
 
 ### Switch kubectl to EKS cluster config
 
@@ -141,9 +141,9 @@ kubectl get svc
 
 ✅ **Screenshots:**
 
-* ![EKS Pods](screenshots/eks_pods.png)
-* ![EKS Service](screenshots/eks_service.png)
-* ![EKS App Running](screenshots/eks_app_running.png)
+* ![EKS Pods](screenshot/eks_pods.png)
+* ![EKS Service](screenshot/eks_service.png)
+* ![EKS App Running](screenshot/eks_app_running.png)
 
 ---
 
@@ -157,7 +157,7 @@ kubectl set image deployment/flask-deployment flask=yw8988/flask-todo:v2
 kubectl rollout status deployment/flask-deployment
 ```
 
-✅ **Screenshot:** ![Rolling Update](screenshots/rolling_update.png)
+✅ **Screenshot:** ![Rolling Update](screenshot/rolling_update.png)
 
 ### Pod Recovery Demo
 
@@ -166,7 +166,7 @@ kubectl delete pod <flask_pod_name>
 kubectl get pods
 ```
 
-✅ **Screenshot:** ![Pod Recovery](screenshots/pod_recovery.png)
+✅ **Screenshot:** ![Pod Recovery](screenshot/pod_recovery.png)
 
 ---
 
