@@ -1,0 +1,87 @@
+alertmanager:
+  enabled: true
+  config:
+    global:
+      resolve_timeout: 5m
+    
+    route:
+      group_by: ['alertname', 'cluster', 'service']
+      group_wait: 10s        # 等待 10 秒收集同組告警
+      group_interval: 30s    # 同組新告警最少間隔 30 秒發送
+      repeat_interval: 30m   # 重複告警間隔 30 分鐘
+      receiver: 'slack-notifications'
+      routes:
+      - match:
+          alertname: Watchdog
+        receiver: 'null'
+      - match:
+          severity: critical
+        receiver: 'slack-critical'
+        group_wait: 5s       # Critical 告警只等 5 秒就發送
+        group_interval: 10s  # Critical 告警間隔更短
+        repeat_interval: 15m # Critical 告警重複更頻繁
+      - match:
+          severity: warning
+        receiver: 'slack-warning'
+        group_wait: 15s
+        group_interval: 1m
+    
+    receivers:
+    - name: 'null'
+    
+    - name: 'slack-notifications'
+      slack_configs:
+      - api_url: 'https://hooks.slack.com/services/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'
+        channel: '#k8s-tests'  # 使用你的頻道
+        title: '{{ if eq .Status "firing" }}🔥{{ else }}✅{{ end }} [{{ .Status | toUpper }}] {{ .GroupLabels.alertname }}'
+        text: |
+          {{ range .Alerts }}
+          *Alert:* {{ .Labels.alertname }}
+          *Severity:* {{ .Labels.severity }}
+          *Summary:* {{ .Annotations.summary }}
+          *Description:* {{ .Annotations.description }}
+          {{ end }}
+        send_resolved: true
+        username: 'Alertmanager'
+        icon_emoji: ':bell:'
+    
+    - name: 'slack-critical'
+      slack_configs:
+      - api_url: 'https://hooks.slack.com/services/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'
+        channel: '#k8s-tests'  # 使用你的頻道
+        title: '🚨 CRITICAL: {{ .GroupLabels.alertname }}'
+        text: |
+          {{ range .Alerts }}
+          *Alert:* {{ .Labels.alertname }}
+          *Severity:* {{ .Labels.severity }}
+          *Instance:* {{ .Labels.instance }}
+          *Summary:* {{ .Annotations.summary }}
+          *Description:* {{ .Annotations.description }}
+          *Time:* {{ .StartsAt.Format "15:04:05 MST" }}
+          {{ end }}
+        send_resolved: true
+        username: 'Critical Alert'
+        icon_emoji: ':rotating_light:'
+    
+    - name: 'slack-warning'
+      slack_configs:
+      - api_url: 'https://hooks.slack.com/services/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'
+        channel: '#k8s-tests'  # 使用你的頻道
+        title: '⚠️ Warning: {{ .GroupLabels.alertname }}'
+        text: |
+          {{ range .Alerts }}
+          *Alert:* {{ .Labels.alertname }}
+          *Severity:* {{ .Labels.severity }}
+          *Summary:* {{ .Annotations.summary }}
+          *Time:* {{ .StartsAt.Format "15:04:05 MST" }}
+          {{ end }}
+        send_resolved: true
+        username: 'Warning Alert'
+        icon_emoji: ':warning:'
+    
+    inhibit_rules:
+    - source_match:
+        severity: 'critical'
+      target_match:
+        severity: 'warning'
+      equal: ['alertname', 'instance']
