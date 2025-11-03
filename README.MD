@@ -165,7 +165,15 @@ kubectl delete pod <flask_pod_name>
 kubectl get pods
 ```
 
-✅ **Screenshot:** ![Pod Recovery](screenshot/pod_recovery.png)
+✅ **Screenshot:** ![Pod Recovery](screenshot/eks_pod_recover.png)
+
+### Scale Demo
+```bash
+kubectl scale deployment flask-todo-deployment --replicas=5
+kubectl get pods
+```
+
+✅ **Screenshot:** ![Pod Recovery](screenshot/eks_scale.png)
 
 ---
 
