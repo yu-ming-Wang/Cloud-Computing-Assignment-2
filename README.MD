@@ -251,15 +251,35 @@ kubectl patch deployment flask-todo-deployment \
 ```
 
 
+To check the readiness probe, we follow the same procedure. The readiness probe was intentionally modified from /list to /brokenpath.
+Kubernetes reported repeated readiness probe failures (HTTP 404), marking the pod as NotReady (0/1).
+The pod remained running (no restarts) but was temporarily removed from the service endpoints.
+After restoring the probe path, the pod returned to 1/1 Ready and resumed serving traffic.
+
+### Intention break app
 ```bash
-kubectl describe pod <flask_pod_name>
+kubectl patch deployment flask-todo-deployment \
+  --type='json' \
+  -p='[
+    {"op": "replace", "path": "/spec/template/spec/containers/0/readinessProbe/httpGet/path", "value": "/brokenpath"}
+  ]'
 ```
 
 ✅ **Screenshot:** ![Health Probe](screenshot/read_probe.png)
 
+### Change back 
+```bash
+kubectl patch deployment flask-todo-deployment \
+  --type='json' \
+  -p='[
+    {"op": "replace", "path": "/spec/template/spec/containers/0/readinessProbe/httpGet/path", "value": "/list"}
+  ]'
+
+```
+
 ---
 
-## ⚡ (Extra Credit 30 pts) Prometheus + Slack Alerting
+## ⚡ 8. Prometheus + Slack Alerting (Extra Credit 30 pts)
 
 Optional bonus section for alert integration tests.
 Include: `prometheus-deployment.yaml`, `alertmanager-config.yaml`, and Slack alert screenshot.
