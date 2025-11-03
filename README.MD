@@ -283,5 +283,18 @@ kubectl patch deployment flask-todo-deployment \
 
 ## ⚡ 8. Prometheus + Slack Alerting (Extra Credit 30 pts)
 
-Optional bonus section for alert integration tests.
-Include: `prometheus-deployment.yaml`, `alertmanager-config.yaml`, and Slack alert screenshot.
+Deploy `alertmanager-values.yaml` and `pod-monitoring-alerts.yaml`
+Prometheus and Alertmanager are deployed in the monitoring namespace via Helm
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring
+```
+
+✅ **Screenshot:** ![extra](screenshot/monitoring.png)
+
+We test by rescaling the replica to zero and get alerts from Slack
+
+✅ **Screenshot:** ![extra](screenshot/slack_alert.png)
+
+
