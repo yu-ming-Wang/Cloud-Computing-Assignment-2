@@ -16,13 +16,6 @@ Cloud-Computing-Assignment-2/
 ├── flask-deployment_eks.yaml          # EKS: Flask Deployment & Service
 ├── mongo-deployment_eks.yaml          # EKS: MongoDB Deployment & Service
 ├── screenshots/                       # All screenshots go here
-│   ├── docker_push.png
-│   ├── minikube_dashboard.png
-│   ├── minikube_app_running.png
-│   ├── eks_cluster_console.png
-│   ├── eks_app_running.png
-│   ├── rolling_update.png
-│   └── health_probe_status.png
 └── README.md
 ```
 
@@ -139,10 +132,14 @@ kubectl get pods
 kubectl get svc
 ```
 
+### Open service
+```bash
+http://aac29ca36dc684ab3b215927d1e76622-1360838796.us-east-1.elb.amazonaws.com:5000
+```
+
 ✅ **Screenshots:**
 
-* ![EKS Pods](screenshot/eks_pods.png)
-* ![EKS Service](screenshot/eks_service.png)
+* ![EKS Service](screenshot/eks_pod_service.png)
 * ![EKS App Running](screenshot/eks_app_running.png)
 
 ---
