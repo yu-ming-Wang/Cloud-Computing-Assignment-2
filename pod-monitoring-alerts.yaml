@@ -1,0 +1,66 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: pod-monitoring-alerts
+  namespace: monitoring
+  labels:
+    prometheus: kube-prometheus
+spec:
+  groups:
+  - name: pod-alerts
+    interval: 15s
+    rules:
+    # Pod 不是 Running 狀態
+    - alert: PodNotReady
+      expr: |
+        kube_pod_status_phase{phase!="Running", phase!="Succeeded"} == 1
+      for: 30s
+      labels:
+        severity: warning
+      annotations:
+        summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is not running"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is in {{ $labels.phase }} state"
+    
+    # Pod 重啟次數過多
+    - alert: PodRestartingTooMuch
+      expr: |
+        rate(kube_pod_container_status_restarts_total[15m]) > 0
+      for: 30s
+      labels:
+        severity: warning
+      annotations:
+        summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is restarting frequently"
+        description: "Pod {{ $labels.pod }} has restarted {{ $value }} times in the last 15 minutes"
+    
+    # Deployment 副本數為 0
+    - alert: DeploymentScaledToZero
+      expr: |
+        kube_deployment_spec_replicas == 0
+      for: 0s
+      labels:
+        severity: warning
+      annotations:
+        summary: "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} scaled to 0"
+        description: "Deployment {{ $labels.deployment }} in namespace {{ $labels.namespace }} has been scaled to 0 replicas"
+    
+    # Deployment 可用副本數少於期望值
+    - alert: DeploymentReplicasMismatch
+      expr: |
+        kube_deployment_spec_replicas != kube_deployment_status_replicas_available
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} replica mismatch"
+        description: "Deployment {{ $labels.deployment }} has {{ $value }} available replicas but expects {{ $labels.spec_replicas }}"
+    
+    # Pod 被刪除/終止中
+    - alert: PodTerminating
+      expr: |
+        kube_pod_deletion_timestamp > 0
+      for: 30s
+      labels:
+        severity: info
+      annotations:
+        summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is terminating"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is being terminated"

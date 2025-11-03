@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-todo-deployment
+spec:
+  replicas: 3                      # for load balancing
+  strategy:                        # Part 6: 設定 Rolling Update 策略
+    type: RollingUpdate            # 使用滾動更新策略（逐步替換舊版本）
+    rollingUpdate:
+      maxUnavailable: 1            # 最多允許 1 個 Pod 暫時不可用
+      maxSurge: 1                  # 最多同時多建立 1 個新 Pod（確保不中斷服務）
+
+  selector:                        # fine I only manage who's taa app=flask-todo
+    matchLabels:
+      app: flask-todo
+  
+  template:
+    metadata:
+      labels:
+        app: flask-todo
+    spec:
+      containers:
+      - name: flask-todo
+        image: yw8988/flask-todo:v2   # the image I push to Docker Hub, change to v2 for part6
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGO_HOST
+          value: "mongo-service"
+        - name: MONGO_PORT
+          value: "27017"
+
+        #Part 7: Health Monitoring 
+        livenessProbe:
+          httpGet:
+            path: /list           # 檢查 Flask /list 頁面
+            port: 5000
+          initialDelaySeconds: 15 # 容器啟動後等待 15 秒再檢查
+          periodSeconds: 10       # 每 10 秒檢查一次
+          timeoutSeconds: 3       # 超過 3 秒沒回應視為失敗
+          failureThreshold: 3     # 連續 3 次失敗才重啟容器
+
+        readinessProbe:
+          httpGet:
+            path: /list
+            port: 5000
+          initialDelaySeconds: 5  # 5 秒後開始檢查
+          periodSeconds: 5        # 每 5 秒檢查一次
+          successThreshold: 1     # 一次成功即標示為 Ready
+          failureThreshold: 3     # 三次失敗標示為 Unready（不導流）
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-todo-service
+spec:
+  type: NodePort     # 對外開放(clusterIP or other)
+  selector:
+    app: flask-todo
+  ports:
+  - port: 5000
+    targetPort: 5000
+    nodePort: 30007   # 你可以自訂或讓 Kubernetes 自動分配

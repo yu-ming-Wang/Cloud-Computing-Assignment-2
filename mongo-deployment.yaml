@@ -1,0 +1,51 @@
+apiVersion: apps/v1   # 告訴 Kubernetes 我們要建立哪個版本的 API 物件（Deployment 屬於 apps/v1）
+kind: Deployment       # 指定建立的資源類型：Deployment
+metadata:
+  name: mongo-deployment    # 這個 Deployment 的名稱（之後用 kubectl get deployments 會看到這個名稱）
+spec:                       # Deployment 的設定細節
+  replicas: 1               # 要啟動幾個 Pod 副本（Mongo 通常只有一個）
+  selector:                 # Deployment 如何知道它管理哪些 Pod
+    matchLabels:
+      app: mongo            # 只管理 label 為 app=mongo 的 Pod
+  template:                  # Pod 的模板（用來定義 Pod 長什麼樣）
+    metadata:
+      labels:
+        app: mongo            # Pod 的 label（和上面的 selector 對應）    
+    spec:                     # Pod 內的設定
+      containers:
+      - name: mongo           # 容器名稱（Pod 裡面可以有多個 container）
+        image: mongo:5.0      # 使用的 MongoDB Docker 映像
+        ports:
+        - containerPort: 27017  # 暴露的容器埠（MongoDB 預設）
+        volumeMounts:           # 將 volume 掛載到容器內的目錄
+        - name: mongo-data
+          mountPath: /data/db  # MongoDB 預設的資料儲存目錄
+      volumes:
+      - name: mongo-data
+        persistentVolumeClaim:   # ✅ 使用 PVC（Persistent Volume Claim）
+          claimName: mongo-pvc   # 指定要掛載的 PVC 名稱
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+spec:
+  type: ClusterIP           # ✅ 明確指出是內部使用的 ClusterIP
+  selector:
+    app: mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+---
+apiVersion: v1
+kind: PersistentVolumeClaim       # 新增 PVC（Persistent Volume Claim）
+metadata:
+  name: mongo-pvc                 # PVC 名稱（與 Deployment 中的 claimName 對應）
+spec:
+  accessModes:
+    - ReadWriteOnce               # 單個 Node 可讀寫（資料庫常用）
+  resources:
+    requests:
+      storage: 1Gi                # 要求 1GB 的儲存空間
+  storageClassName: standard      # 指定 Storage Class（Minikube 預設為 standard）
