@@ -144,7 +144,32 @@ http://aac29ca36dc684ab3b215927d1e76622-1360838796.us-east-1.elb.amazonaws.com:5
 
 ---
 
-## 🔄 5. Rolling Update
+## 🔄 5. Deployments and ReplicaSets
+
+```bash
+# Check deployment
+kubectl get deployment flask-todo-deployment
+```
+
+```bash
+# Check ReplicaSets
+kubectl get rs
+```
+
+✅ **Screenshot:** ![rs](screenshot/eks_rs.png)
+
+### Pod Recovery Demo
+
+```bash
+kubectl delete pod <flask_pod_name>
+kubectl get pods
+```
+
+✅ **Screenshot:** ![Pod Recovery](screenshot/pod_recovery.png)
+
+---
+
+## 🔄 6. Rolling Update
 
 ```bash
 # Update image version
