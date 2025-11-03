@@ -27,7 +27,7 @@ Cloud-Computing-Assignment-2/
 
 ### Dockerfile
 
-define flask-todo image
+1. Define flask-todo image
 
 ---
 
@@ -40,13 +40,16 @@ docker-compose up
 ```
 
 ```bash
-docker start flask
+docker start flask-todo
 ```
 
 ```bash
 docker logs -f flask-todo
 ```
-Open the service in a browser
+
+### Open the service in a browser
+
+### Push to DockerHub
 
 ✅ **Screenshot:** ![Local App Running](screenshot/local_app_running.png)
 ✅ **Screenshot:** ![Docker push](screenshot/dockerhub.png)
